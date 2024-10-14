@@ -312,3 +312,21 @@ def get_dynamic_volatilit(period):
 
     return current_volatility
 
+
+def calculate_order_sizes(total_order_size, num_orders):
+    order_sizes = []
+    remaining_percentage = 0.70
+    first_order_size = total_order_size * 0.30
+
+    order_sizes.append(first_order_size)
+
+    for i in range(1, num_orders):
+        next_order_size = total_order_size * (remaining_percentage * 0.3)
+        order_sizes.append(next_order_size)
+        remaining_percentage *= 0.7
+
+    # Return a list of order Sizes where the first size is the larges
+    return order_sizes
+    # Return a list of order Sizes where the last size is the larges
+    # return order_sizes.reverse()
+
