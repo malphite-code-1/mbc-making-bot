@@ -330,3 +330,13 @@ def calculate_order_sizes(total_order_size, num_orders):
     # Return a list of order Sizes where the last size is the larges
     # return order_sizes.reverse()
 
+
+def get_price_step_percentage(order_num, base_price_step_percentage):
+    if order_num < 9:
+        return base_price_step_percentage
+    elif order_num < 12:
+        return base_price_step_percentage * 2.5
+    else:
+        return base_price_step_percentage * 4
+
+
