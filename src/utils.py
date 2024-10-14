@@ -200,3 +200,33 @@ def calculate_order_size(
 
     return order_size
 
+
+def get_dynamic_sleep_time(volatility):
+    """
+    Get dynamic sleep time based on market volatility.
+
+    Parameters:
+    - volatility: Current market volatility
+
+    Returns:
+    - int: Dynamic sleep time in seconds
+    """
+
+    # Initialize parameters
+    base_sleep_time = 8  # Base sleep time in seconds
+    max_sleep_time = 20  # Maximum sleep time in seconds
+    min_sleep_time = 1  # Minimum sleep time in seconds
+
+    # Adjust sleep time based on volatility
+    if volatility > 0.05:  # High volatility threshold
+        sleep_time = base_sleep_time / 2
+    elif volatility < 0.02:  # Low volatility threshold
+        sleep_time = base_sleep_time * 2
+    else:
+        sleep_time = base_sleep_time
+
+    # Ensure sleep time is within limits
+    sleep_time = max(min(sleep_time, max_sleep_time), min_sleep_time)
+
+    return sleep_time
+
