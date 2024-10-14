@@ -144,3 +144,59 @@ def get_current_price(symbol):
             "Failed to get current price: " + res.get("error", "Unknown error")
         )
 
+
+def calculate_order_size(
+    order_type, volatility, max_order_size, min_order_size, risk_percentage=None
+):
+    """
+    Calculate the order size based on risk management.
+
+    Parameters:
+    - order_type: The type of order ('buy' or 'sell').
+    - volatility: The current market volatility.
+    - max_order_size: The maximum allowed size for an order.
+    - min_order_size: The minimum allowed size for an order.
+    - risk_percentage: Optional risk percentage of the account balance to use per trade.
+
+    Returns:
+    - order_size: The calculated order size.
+    """
+    current_price = get_current_price(pair)
+
+    # Fetch account balance
+    account_balances = fetch_account_balance()
+
+    if order_type == "sell":
+        # Use the token_symbol balance for sell orders
+        asset_balance = account_balances[token_symbol]["free"]
+    elif order_type == "buy":
+        # Use the USDT balance for buy orders
+        usdt_balance = account_balances["usdt"]["free"]
+        # Convert USDT balance to token_symbol
+        asset_balance = usdt_balance / current_price
+
+    # Optionally apply a risk percentage if provided
+    if risk_percentage is not None:
+        risk_amount = asset_balance * risk_percentage
+    else:
+        risk_amount = asset_balance  # Use the full balance without risk adjustment
+
+    # Ensure max_order_size does not exceed the available balance
+    if max_order_size > risk_amount:
+        max_order_size = risk_amount
+
+    # Adjust order size based on volatility
+    volatility_adjustment = 1 / (volatility + 1)
+
+    # Calculate the raw order size
+    raw_order_size = (
+        risk_amount * volatility_adjustment / current_price
+        if order_type == "buy"
+        else risk_amount * volatility_adjustment
+    )
+
+    # Ensure the order size is within defined limits
+    order_size = max(min(raw_order_size, max_order_size), min_order_size)
+
+    return order_size
+
