@@ -46,3 +46,31 @@ def get_sell_price_in_spread():
     max_ask_price = bid_price * 1.02
     return max_ask_price
 
+
+def place_order(symbol, side, amount, price=None):
+    """
+    Place an order on the exchange.
+
+    Parameters:
+    - symbol: Trading pair symbol (e.g., pair)
+    - side: Order side ("buy_maker" or "sell_maker")
+    - price: Price at which to place the order
+    - amount: Amount of the asset to trade
+
+    Returns:
+    - dict: Response from the exchange
+    """
+
+    path = "v2/create_order.do"
+
+    payload = {
+        "symbol": symbol,
+        "type": side,
+        "amount": amount,
+    }
+
+    if price is not None:
+        payload["price"] = price
+
+    return client.http_request("post", path, payload=payload)
+
