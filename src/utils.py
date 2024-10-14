@@ -30,3 +30,19 @@ def get_order_book(symbol):
     payload = {"symbol": symbol}
     return client.http_request("get", api_url, payload=payload)
 
+
+def get_buy_price_in_spread():
+    order_book = get_order_book(pair)
+    ask_price = float(order_book["data"]["askPrice"])
+    # Calculate the maximum allowable ask price based on a 2% spread
+    max_ask_price = ask_price * 0.98
+    return max_ask_price
+
+
+def get_sell_price_in_spread():
+    order_book = get_order_book(pair)
+    bid_price = float(order_book["data"]["bidPrice"])
+    # Calculate the maximum allowable ask price based on a 2% spread
+    max_ask_price = bid_price * 1.02
+    return max_ask_price
+
