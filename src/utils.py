@@ -122,3 +122,25 @@ def cancel_list_of_orders(symbol, order_ids):
         print(cancel_one_order(symbol, order_id))
         order_ids.remove(order_id)
 
+
+def get_current_price(symbol):
+    """
+    Get the current price for a given symbol.
+
+    Parameters:
+    - symbol: Trading pair symbol (e.g., pair)
+
+    Returns:
+    - float: Current price of the trading pair
+    """
+    path = "v2/supplement/ticker/price.do"
+    payload = {"symbol": symbol}
+    res = client.http_request("GET", path, payload=payload)
+    if res["result"] == True:
+        current_price = res["data"][0]["price"]
+        return float(current_price)
+    else:
+        raise Exception(
+            "Failed to get current price: " + res.get("error", "Unknown error")
+        )
+
