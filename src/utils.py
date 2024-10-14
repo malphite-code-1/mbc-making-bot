@@ -74,3 +74,51 @@ def place_order(symbol, side, amount, price=None):
 
     return client.http_request("post", path, payload=payload)
 
+
+def cancel_all_orders(symbol):
+    """
+    Cancel all orders for a given symbol.
+
+    Parameters:
+    - symbol: Trading pair symbol (e.g., pair)
+
+    Returns:
+    - dict: Response from the exchange
+    """
+
+    path = "v2/supplement/cancel_order_by_symbol.do"
+    payload = {"symbol": symbol}
+    return client.http_request("POST", path, payload=payload)
+
+
+def cancel_one_order(symbol, order_id):
+    """
+    Cancel One order
+
+    Parameters:
+    - symbol: Trading pair symbol (e.g., pair)
+    - order_id : Order of the id that you need to cancel
+
+    Returns:
+    - dict: Response from the exchange
+    """
+    path = "v2/supplement/cancel_order.do"
+    payload = {"symbol": symbol, "orderId": order_id}
+    return client.http_request("POST", path, payload=payload)
+
+
+def cancel_list_of_orders(symbol, order_ids):
+    """
+    Cancel a List of orders used to not intrrupt the other orders
+
+    Parameters:
+    - symbol: Trading pair symbol (e.g., pair)
+    - order_ids : List of Order ids that you need to cancel
+
+    """
+    if not order_ids:
+        return
+    for order_id in order_ids:
+        print(cancel_one_order(symbol, order_id))
+        order_ids.remove(order_id)
+
