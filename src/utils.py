@@ -261,3 +261,33 @@ def fetch_historical_prices(period):
         "time": start_timestamp,
     }
 
+
+def calculate_price_changes(price_data):
+    """
+    Calculate price changes from historical price data.
+
+    Parameters:
+    - price_data: List of historical prices
+
+    Returns:
+    - numpy.array: Array of price changes
+    """
+    # Calculate price changes from historical price data
+    prices = np.array(price_data)
+    price_changes = np.diff(prices) / prices[:-1]
+    return price_changes
+
+
+def calculate_standard_deviation(price_changes):
+    """
+    Calculate the standard deviation of price changes.
+
+    Parameters:
+    - price_changes: Array of price changes
+
+    Returns:
+    - float: Standard deviation of price changes
+    """
+    return np.std(price_changes)
+
+
