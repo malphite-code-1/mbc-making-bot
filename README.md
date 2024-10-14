@@ -52,6 +52,14 @@ SECRET_KEY = "your_secret_key"
 
 Ensure you have added your API keys to interact with the LBANK exchange properly.
 
+Also in `utils.py` make sure to replace 
+
+```python
+pair = "token_usdt"
+token_symbol = "token"
+```
+With actual token ticker
+
 ### Running the Bot
 
 Run the bot by executing the main script:
