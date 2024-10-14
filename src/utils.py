@@ -366,3 +366,26 @@ def fetch_account_balance():
             "Failed to fetch account balances: " + res.get("msg", "Unknown error")
         )
 
+
+def calculate_percentage_change(initial_balance, current_balance):
+    change = ((current_balance - initial_balance) / initial_balance) * 100
+    return change
+
+
+def get_current_orders():
+    """
+    Get the current pending orders
+
+    Returns:
+    -
+
+    """
+    path = "v2/supplement/orders_info_no_deal.do"
+    payload = {"symbol": pair, "current_page": "1", "page_length": "200"}
+    res = client.http_request("POST", path, payload=payload)
+    return res
+
+
+def get_num_of_orders():
+    list_of_orders = get_current_orders()["data"]["orders"]
+    return len(list_of_orders)
