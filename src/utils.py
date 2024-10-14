@@ -340,3 +340,29 @@ def get_price_step_percentage(order_num, base_price_step_percentage):
         return base_price_step_percentage * 4
 
 
+def fetch_account_balance():
+    """
+    Fetch account balance for specified assets.
+
+    Returns:
+    - dict: Account balances for targeted assets
+    """
+    path = "v2/supplement/user_info_account.do"
+    res = client.http_request("POST", path)
+    if res["result"] == "true":
+        balances = res["data"]["balances"]
+        targeted_assets = {"usdt": None, token_symbol: None}
+        for balance in balances:
+            if balance["asset"] in targeted_assets:
+                targeted_assets[balance["asset"]] = {
+                    "free": float(balance["free"]),
+                    "locked": float(balance["locked"]),
+                }
+            if all(value is not None for value in targeted_assets.values()):
+                break
+        return targeted_assets
+    else:
+        raise Exception(
+            "Failed to fetch account balances: " + res.get("msg", "Unknown error")
+        )
+
