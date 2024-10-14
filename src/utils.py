@@ -230,3 +230,34 @@ def get_dynamic_sleep_time(volatility):
 
     return sleep_time
 
+
+def calculate_percentage_change(initial_balance, current_balance):
+    change = ((current_balance - initial_balance) / initial_balance) * 100
+    return change
+
+
+def fetch_historical_prices(period):
+    """
+    Fetch historical prices for a given period.
+
+    Parameters:
+    - period: Number of minutes of historical data to fetch
+
+    Returns:
+    - list: Historical price data
+    """
+    path = "v2/kline.do"
+    end_date = datetime.now(timezone.utc)
+    start_date = end_date - timedelta(minutes=period)
+
+    # Convert dates to timestamps in seconds
+    end_timestamp = int(end_date.timestamp())
+    start_timestamp = int(start_date.timestamp())
+
+    payload = {
+        "symbol": pair,
+        "type": "minute1",
+        "size": period,
+        "time": start_timestamp,
+    }
+
