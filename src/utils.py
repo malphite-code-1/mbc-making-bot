@@ -291,3 +291,24 @@ def calculate_standard_deviation(price_changes):
     return np.std(price_changes)
 
 
+def get_dynamic_volatilit(period):
+    """
+    Determain the volatilit of the pair through a period of time.
+    Keeps increasing the period if the volatilit is too low.
+
+    Parameters:
+    - period: Number of minutes
+
+    Returns:
+    - float: volatilit
+    """
+    price_data = fetch_historical_prices(period)  # In minutes
+    price_changes = calculate_price_changes(price_data)
+    current_volatility = calculate_standard_deviation(price_changes)
+
+    if current_volatility == 0:
+        period += 60
+        get_dynamic_volatilit(period)
+
+    return current_volatility
+
