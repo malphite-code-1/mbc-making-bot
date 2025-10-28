@@ -260,7 +260,7 @@ def fetch_historical_prices(period):
         "size": period,
         "time": start_timestamp,
     }
-    return client.http_request("get", api_url, payload=payload)
+    return client.http_request("get", path, payload=payload)
 
 
 def calculate_price_changes(price_data):
