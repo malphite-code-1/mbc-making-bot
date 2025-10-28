@@ -19,7 +19,7 @@ from src.utils import (
 
 buy_order_ids = []
 sell_order_ids = []
-SYMBOL = "token_usdt"
+SYMBOL = "mbc_usdt"
 
 
 def market_making(
@@ -34,17 +34,17 @@ def market_making(
             initial_balance["usdt"]["free"] + initial_balance["usdt"]["locked"]
         )
         initial_safi_balance = (
-            initial_balance["safi"]["free"] + initial_balance["safi"]["locked"]
+            initial_balance["mbc"]["free"] + initial_balance["mbc"]["locked"]
         )
 
         while True:
             try:
-                order_book = get_order_book("safi_usdt")
+                order_book = get_order_book(SYMBOL)
 
                 balance = fetch_account_balance()
 
                 usdt_balance = balance["usdt"]["free"] + balance["usdt"]["locked"]
-                safi_balance = balance["safi"]["free"] + balance["safi"]["locked"]
+                safi_balance = balance["mbc"]["free"] + balance["mbc"]["locked"]
 
                 usdt_change = calculate_percentage_change(
                     initial_usdt_balance, usdt_balance
@@ -66,7 +66,7 @@ def market_making(
                     safi_pause = False
 
                 if order_book["result"] == "true":
-                    # Example of data: {'symbol': 'safi_usdt', 'askPrice': '0.055', 'askQty': '78.43', 'bidQty': '724.1', 'bidPrice': '0.054761'
+                    # Example of data: {'symbol': 'mbc_usdt', 'askPrice': '0.055', 'askQty': '78.43', 'bidQty': '724.1', 'bidPrice': '0.054761'
                     data = order_book["data"]
                     # The price a buyer is willing to pay
                     bid_price = float(data["bidPrice"])
