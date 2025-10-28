@@ -8,7 +8,7 @@ client = BlockHttpClient(
     sign_method="RSA",
     api_key="API_KEY",
     api_secret="API_SECRET",
-    base_url="https://www.lbkex.net/",
+    base_url="https://api.lbkex.com/",
     log_level=logging.ERROR,
 )
 
@@ -260,6 +260,7 @@ def fetch_historical_prices(period):
         "size": period,
         "time": start_timestamp,
     }
+    return client.http_request("get", api_url, payload=payload)
 
 
 def calculate_price_changes(price_data):
