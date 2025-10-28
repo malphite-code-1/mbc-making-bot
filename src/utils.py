@@ -12,8 +12,8 @@ client = BlockHttpClient(
     log_level=logging.ERROR,
 )
 
-pair = "token_usdt"
-token_symbol = "token"
+pair = "mbc_usdt"
+token_symbol = "mbc"
 
 
 def get_order_book(symbol):
